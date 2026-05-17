@@ -34,10 +34,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-
     buildFeatures {
         viewBinding = true
     }
@@ -63,6 +59,7 @@ dependencies {
     implementation(libs.coroutines.android)
 
     implementation(libs.glide)
+    implementation(libs.fragment.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

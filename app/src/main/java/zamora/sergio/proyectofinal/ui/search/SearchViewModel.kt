@@ -5,7 +5,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 import zamora.sergio.proyectofinal.data.AnimeRepository
 import zamora.sergio.proyectofinal.data.local.AnimeDatabase
 import zamora.sergio.proyectofinal.data.remote.Anime
@@ -29,10 +32,18 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             _loading.value = true
             _error.value = null
             try {
+                delay(400)
                 val response = repository.searchAnime(query)
                 _results.value = response.data
+            } catch (e: HttpException) {
+                _error.value = if (e.code() == 429) "Demasiadas búsquedas, espera un momento."
+                               else "Error del servidor: ${e.code()}"
+                _results.value = emptyList()
+            } catch (e: IOException) {
+                _error.value = "Sin conexión a internet."
+                _results.value = emptyList()
             } catch (e: Exception) {
-                _error.value = "No se pudo conectar. Revisa tu internet."
+                _error.value = "Error al buscar: ${e.message}"
                 _results.value = emptyList()
             } finally {
                 _loading.value = false

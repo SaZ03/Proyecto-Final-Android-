@@ -10,6 +10,8 @@ import zamora.sergio.proyectofinal.data.AnimeRepository
 import zamora.sergio.proyectofinal.data.local.AnimeDatabase
 import zamora.sergio.proyectofinal.data.local.FavoriteAnime
 import zamora.sergio.proyectofinal.data.remote.Anime
+import zamora.sergio.proyectofinal.data.remote.AnimeImageJpg
+import zamora.sergio.proyectofinal.data.remote.AnimeImages
 
 class DetailViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -24,15 +26,36 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
     private val _loading = MutableLiveData(false)
     val loading: LiveData<Boolean> = _loading
 
+    private val _error = MutableLiveData<String?>()
+    val error: LiveData<String?> = _error
+
     fun loadAnime(id: Int) {
         viewModelScope.launch {
             _loading.value = true
+            _error.value = null
             try {
                 val response = repository.getAnimeDetail(id)
                 _anime.value = response.data
                 _isFavorite.value = repository.isFavorite(id)
             } catch (e: Exception) {
-                _anime.value = null
+                val local = repository.getFavoriteById(id)
+                if (local != null) {
+                    _anime.value = Anime(
+                        mal_id = local.id,
+                        title = local.title,
+                        images = AnimeImages(AnimeImageJpg(local.imageUrl)),
+                        synopsis = local.synopsis,
+                        score = local.score,
+                        episodes = local.episodes,
+                        year = null,
+                        genres = null
+                    )
+                    _isFavorite.value = true
+                    _error.value = "Sin conexión — mostrando datos guardados"
+                } else {
+                    _anime.value = null
+                    _error.value = "No se pudo cargar el anime."
+                }
             } finally {
                 _loading.value = false
             }

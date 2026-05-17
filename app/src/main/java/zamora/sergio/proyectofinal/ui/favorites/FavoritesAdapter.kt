@@ -10,6 +10,7 @@ import zamora.sergio.proyectofinal.databinding.ItemFavoriteBinding
 
 class FavoritesAdapter(
     private var list: List<FavoriteAnime>,
+    private val onClick: (FavoriteAnime) -> Unit,
     private val onDelete: (FavoriteAnime) -> Unit
 ) : RecyclerView.Adapter<FavoritesAdapter.FavoriteViewHolder>() {
 
@@ -32,6 +33,7 @@ class FavoritesAdapter(
                 .placeholder(R.drawable.ic_launcher_background)
                 .centerCrop()
                 .into(ivCover)
+            root.setOnClickListener { onClick(anime) }
             btnDelete.setOnClickListener { onDelete(anime) }
         }
     }

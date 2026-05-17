@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/sergi/AndroidStudioProjects/TercerParcial/**)",
+      "Bash(mv \"ProyectoFinla\" \"PROYECTOFINAL\")"
+    ]
+  }
+}

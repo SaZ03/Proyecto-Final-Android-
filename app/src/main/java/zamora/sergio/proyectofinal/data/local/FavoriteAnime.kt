@@ -10,5 +10,6 @@ data class FavoriteAnime(
     val imageUrl: String,
     val synopsis: String,
     val score: Double,
-    val episodes: Int
+    val episodes: Int,
+    val addedAt: Long = System.currentTimeMillis()
 )

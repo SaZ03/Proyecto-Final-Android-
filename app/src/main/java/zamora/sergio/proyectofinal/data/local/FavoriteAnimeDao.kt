@@ -7,7 +7,13 @@ import androidx.room.*
 interface FavoriteAnimeDao {
 
     @Query("SELECT * FROM favorites ORDER BY title ASC")
-    fun getAll(): LiveData<List<FavoriteAnime>>
+    fun getAllByTitle(): LiveData<List<FavoriteAnime>>
+
+    @Query("SELECT * FROM favorites ORDER BY score DESC")
+    fun getAllByScore(): LiveData<List<FavoriteAnime>>
+
+    @Query("SELECT * FROM favorites ORDER BY addedAt DESC")
+    fun getAllByDate(): LiveData<List<FavoriteAnime>>
 
     @Query("SELECT * FROM favorites WHERE id = :id")
     suspend fun getById(id: Int): FavoriteAnime?

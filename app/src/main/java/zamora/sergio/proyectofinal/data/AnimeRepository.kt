@@ -9,7 +9,9 @@ import zamora.sergio.proyectofinal.data.remote.RetrofitClient
 
 class AnimeRepository(private val db: AnimeDatabase) {
 
-    fun getFavorites(): LiveData<List<FavoriteAnime>> = db.favoriteAnimeDao().getAll()
+    fun getFavoritesByTitle(): LiveData<List<FavoriteAnime>> = db.favoriteAnimeDao().getAllByTitle()
+    fun getFavoritesByScore(): LiveData<List<FavoriteAnime>> = db.favoriteAnimeDao().getAllByScore()
+    fun getFavoritesByDate(): LiveData<List<FavoriteAnime>> = db.favoriteAnimeDao().getAllByDate()
 
     suspend fun isFavorite(id: Int): Boolean = db.favoriteAnimeDao().getById(id) != null
 

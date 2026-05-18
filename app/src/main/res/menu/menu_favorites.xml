@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/sort_by_title"
+        android:title="Ordenar por título"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/sort_by_score"
+        android:title="Ordenar por score"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/sort_by_date"
+        android:title="Ordenar por fecha"
+        android:showAsAction="never" />
+</menu>

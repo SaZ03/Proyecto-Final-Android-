@@ -2,11 +2,14 @@ package zamora.sergio.proyectofinal.ui.favorites
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import zamora.sergio.proyectofinal.R
 import zamora.sergio.proyectofinal.databinding.ActivityFavoritesBinding
 import zamora.sergio.proyectofinal.ui.detail.DetailActivity
 
@@ -26,6 +29,20 @@ class FavoritesActivity : AppCompatActivity() {
 
         setupRecyclerView()
         observeViewModel()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_favorites, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.sort_by_title -> { viewModel.sortOrder.value = SortOrder.TITLE; true }
+            R.id.sort_by_score -> { viewModel.sortOrder.value = SortOrder.SCORE; true }
+            R.id.sort_by_date  -> { viewModel.sortOrder.value = SortOrder.DATE;  true }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupRecyclerView() {

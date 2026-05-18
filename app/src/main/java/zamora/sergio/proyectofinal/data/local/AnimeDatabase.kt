@@ -7,10 +7,11 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [FavoriteAnime::class], version = 2, exportSchema = false)
+@Database(entities = [FavoriteAnime::class, WatchedEpisode::class], version = 3, exportSchema = false)
 abstract class AnimeDatabase : RoomDatabase() {
 
     abstract fun favoriteAnimeDao(): FavoriteAnimeDao
+    abstract fun watchedEpisodeDao(): WatchedEpisodeDao
 
     companion object {
         @Volatile
@@ -22,13 +23,21 @@ abstract class AnimeDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS watched_episodes (animeId INTEGER NOT NULL, episodeNumber INTEGER NOT NULL, PRIMARY KEY(animeId, episodeNumber))"
+                )
+            }
+        }
+
         fun getInstance(context: Context): AnimeDatabase =
             instance ?: synchronized(this) {
                 instance ?: Room.databaseBuilder(
                     context.applicationContext,
                     AnimeDatabase::class.java,
                     "anime_db"
-                ).addMigrations(MIGRATION_1_2).build().also { instance = it }
+                ).addMigrations(MIGRATION_1_2, MIGRATION_2_3).build().also { instance = it }
             }
     }
 }

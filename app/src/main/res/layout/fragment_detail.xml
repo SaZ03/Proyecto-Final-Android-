@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:visibility="gone" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -93,7 +93,20 @@
                     android:textSize="14sp"
                     android:textColor="@color/textSecondary"
                     android:lineSpacingExtra="4dp"
-                    android:layout_marginBottom="16dp" />
+                    android:maxLines="4"
+                    android:ellipsize="end" />
+
+                <TextView
+                    android:id="@+id/tvShowMore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ver más ▾"
+                    android:textSize="13sp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="12dp"
+                    android:background="?attr/selectableItemBackground" />
 
                 <Button
                     android:id="@+id/btnFavorite"
@@ -103,10 +116,55 @@
                     android:backgroundTint="@color/colorPrimary"
                     android:layout_marginBottom="16dp" />
 
+                <!-- Sección de episodios -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/textSecondary"
+                    android:alpha="0.3"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Episodios"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/textPrimary"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tvBroadcast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/colorAccent"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvEpisodesEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cargando episodios..."
+                    android:textSize="13sp"
+                    android:textColor="@color/textSecondary"
+                    android:textAlignment="center"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:visibility="visible" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvEpisodes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

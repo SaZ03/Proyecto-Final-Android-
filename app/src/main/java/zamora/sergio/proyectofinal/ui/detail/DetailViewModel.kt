@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import zamora.sergio.proyectofinal.data.AnimeRepository
 import zamora.sergio.proyectofinal.data.local.AnimeDatabase
@@ -12,10 +14,13 @@ import zamora.sergio.proyectofinal.data.local.FavoriteAnime
 import zamora.sergio.proyectofinal.data.remote.Anime
 import zamora.sergio.proyectofinal.data.remote.AnimeImageJpg
 import zamora.sergio.proyectofinal.data.remote.AnimeImages
+import zamora.sergio.proyectofinal.data.remote.EpisodeItem
 
 class DetailViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = AnimeRepository(AnimeDatabase.getInstance(application))
+
+    private val _animeId = MutableLiveData<Int>()
 
     private val _anime = MutableLiveData<Anime?>()
     val anime: LiveData<Anime?> = _anime
@@ -29,7 +34,15 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
 
+    private val _episodes = MutableLiveData<List<EpisodeItem>>(emptyList())
+    val episodes: LiveData<List<EpisodeItem>> = _episodes
+
+    val watchedNumbers: LiveData<List<Int>> = _animeId.switchMap { id ->
+        repository.getWatchedNumbers(id)
+    }
+
     fun loadAnime(id: Int) {
+        _animeId.value = id
         viewModelScope.launch {
             _loading.value = true
             _error.value = null
@@ -48,7 +61,9 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
                         score = local.score,
                         episodes = local.episodes,
                         year = null,
-                        genres = null
+                        genres = null,
+                        status = null,
+                        broadcast = null
                     )
                     _isFavorite.value = true
                     _error.value = "Sin conexión — mostrando datos guardados"
@@ -58,6 +73,29 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
                 }
             } finally {
                 _loading.value = false
+            }
+            loadEpisodes(id)
+        }
+    }
+
+    private fun loadEpisodes(animeId: Int) {
+        viewModelScope.launch {
+            try {
+                delay(500) // evitar rate limit de Jikan tras la petición de detalle
+                _episodes.value = repository.getEpisodes(animeId)
+            } catch (e: Exception) {
+                // fallo silencioso — la sección simplemente queda vacía
+            }
+        }
+    }
+
+    fun toggleWatched(episodeNumber: Int, isChecked: Boolean) {
+        val animeId = _animeId.value ?: return
+        viewModelScope.launch {
+            if (isChecked) {
+                repository.markWatchedUpTo(animeId, episodeNumber)
+            } else {
+                repository.unmarkWatched(animeId, episodeNumber)
             }
         }
     }

@@ -7,6 +7,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import zamora.sergio.proyectofinal.databinding.ActivityMainBinding
 import zamora.sergio.proyectofinal.ui.detail.DetailActivity
@@ -25,9 +26,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupDarkModeSwitch()
         setupRecyclerView()
         setupListeners()
         observeViewModel()
+    }
+
+    private fun setupDarkModeSwitch() {
+        val prefs = getSharedPreferences("settings", MODE_PRIVATE)
+        val isDark = prefs.getBoolean("dark_mode", false)
+        binding.switchDarkMode.isChecked = isDark
+
+        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit().putBoolean("dark_mode", isChecked).apply()
+            AppCompatDelegate.setDefaultNightMode(
+                if (isChecked) AppCompatDelegate.MODE_NIGHT_YES
+                else AppCompatDelegate.MODE_NIGHT_NO
+            )
+        }
     }
 
     private fun setupRecyclerView() {

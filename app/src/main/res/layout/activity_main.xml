@@ -12,14 +12,29 @@
         android:orientation="vertical"
         android:padding="12dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="AnimeTracker"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginBottom="12dp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="AnimeTracker"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchDarkMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Oscuro" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +52,7 @@
                 android:inputType="text"
                 android:layout_marginEnd="8dp"
                 android:padding="10dp"
-                android:background="@android:color/white"
+                android:background="@color/editTextBg"
                 android:elevation="2dp" />
 
             <Button
@@ -62,7 +77,7 @@
             android:layout_height="wrap_content"
             android:text="Busca un anime para empezar"
             android:textAlignment="center"
-            android:textColor="#888888"
+            android:textColor="@color/hintText"
             android:textSize="16sp"
             android:layout_marginTop="40dp"
             android:visibility="visible" />

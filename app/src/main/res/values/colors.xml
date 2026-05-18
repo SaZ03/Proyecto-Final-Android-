@@ -8,4 +8,6 @@
     <color name="background">#F5F5F5</color>
     <color name="textPrimary">#212121</color>
     <color name="textSecondary">#616161</color>
+    <color name="editTextBg">#FFFFFF</color>
+    <color name="hintText">#888888</color>
 </resources>

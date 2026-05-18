@@ -15,6 +15,7 @@ room = "2.7.0"
 lifecycle = "2.8.7"
 coroutines = "1.9.0"
 glide = "4.16.0"
+archCoreTesting = "2.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,6 +36,8 @@ lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version = "1.8.6" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+arch-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "archCoreTesting" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

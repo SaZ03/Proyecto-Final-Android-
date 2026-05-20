@@ -6,8 +6,6 @@ import zamora.sergio.proyectofinal.data.local.FavoriteAnime
 
 class AnimeTrackerUnitTest {
 
-    // --- Formateo de score (misma lógica que en FavoritesAdapter y DetailFragment) ---
-
     @Test
     fun score_showsNA_whenZero() {
         val score = 0.0
@@ -21,8 +19,6 @@ class AnimeTrackerUnitTest {
         val result = if (score > 0) "★ $score" else "★ N/A"
         assertEquals("★ 8.5", result)
     }
-
-    // --- Formateo de episodios ---
 
     @Test
     fun episodes_showsQuestionMark_whenZero() {
@@ -38,7 +34,12 @@ class AnimeTrackerUnitTest {
         assertEquals("24 eps", result)
     }
 
-    // --- Validación de búsqueda (misma lógica que en SearchViewModel) ---
+    @Test
+    fun episodes_showsOne_whenSingleEpisode() {
+        val episodes = 1
+        val result = if (episodes > 0) "$episodes eps" else "? eps"
+        assertEquals("1 eps", result)
+    }
 
     @Test
     fun searchQuery_isBlank_whenOnlySpaces() {
@@ -52,7 +53,11 @@ class AnimeTrackerUnitTest {
         assertFalse(query.isBlank())
     }
 
-    // --- Entidad FavoriteAnime ---
+    @Test
+    fun searchQuery_isBlank_whenEmpty() {
+        val query = ""
+        assertTrue(query.isBlank())
+    }
 
     @Test
     fun favoriteAnime_storesAllFieldsCorrectly() {

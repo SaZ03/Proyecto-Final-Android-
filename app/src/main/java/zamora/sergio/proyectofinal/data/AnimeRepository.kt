@@ -11,7 +11,6 @@ import zamora.sergio.proyectofinal.data.remote.RetrofitClient
 
 class AnimeRepository(private val db: AnimeDatabase) {
 
-    // --- Favorites ---
     fun getFavoritesByTitle(): LiveData<List<FavoriteAnime>> = db.favoriteAnimeDao().getAllByTitle()
     fun getFavoritesByScore(): LiveData<List<FavoriteAnime>> = db.favoriteAnimeDao().getAllByScore()
     fun getFavoritesByDate(): LiveData<List<FavoriteAnime>> = db.favoriteAnimeDao().getAllByDate()
@@ -24,7 +23,6 @@ class AnimeRepository(private val db: AnimeDatabase) {
 
     suspend fun removeFavorite(id: Int) = db.favoriteAnimeDao().deleteById(id)
 
-    // --- Remote ---
     suspend fun searchAnime(query: String): AnimeSearchResponse =
         RetrofitClient.apiService.searchAnime(query)
 
@@ -34,7 +32,6 @@ class AnimeRepository(private val db: AnimeDatabase) {
     suspend fun getEpisodes(animeId: Int): List<EpisodeItem> =
         RetrofitClient.apiService.getAnimeEpisodes(animeId).data
 
-    // --- Watched episodes ---
     fun getWatchedNumbers(animeId: Int): LiveData<List<Int>> =
         db.watchedEpisodeDao().getWatchedNumbers(animeId)
 

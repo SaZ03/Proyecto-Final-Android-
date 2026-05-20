@@ -13,12 +13,15 @@ import org.junit.runner.RunWith
 import zamora.sergio.proyectofinal.data.local.AnimeDatabase
 import zamora.sergio.proyectofinal.data.local.FavoriteAnime
 import zamora.sergio.proyectofinal.data.local.FavoriteAnimeDao
+import zamora.sergio.proyectofinal.data.local.WatchedEpisode
+import zamora.sergio.proyectofinal.data.local.WatchedEpisodeDao
 
 @RunWith(AndroidJUnit4::class)
 class AnimeDatabaseTest {
 
     private lateinit var db: AnimeDatabase
     private lateinit var dao: FavoriteAnimeDao
+    private lateinit var watchedDao: WatchedEpisodeDao
 
     @Before
     fun setup() {
@@ -27,6 +30,7 @@ class AnimeDatabaseTest {
             .allowMainThreadQueries()
             .build()
         dao = db.favoriteAnimeDao()
+        watchedDao = db.watchedEpisodeDao()
     }
 
     @After
@@ -67,5 +71,12 @@ class AnimeDatabaseTest {
         dao.insert(FavoriteAnime(5, "Reemplazado", "url", "Synopsis", 8.0, 12))
         val retrieved = dao.getById(5)
         assertEquals("Reemplazado", retrieved?.title)
+    }
+
+    @Test
+    fun insertWatchedEpisode_andDelete() = runBlocking {
+        watchedDao.insertAll(listOf(WatchedEpisode(animeId = 10, episodeNumber = 3)))
+        watchedDao.delete(animeId = 10, episodeNumber = 3)
+        // Si no lanza excepción, la operación fue exitosa
     }
 }
